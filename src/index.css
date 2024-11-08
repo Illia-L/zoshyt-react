@@ -1,13 +1,115 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* #region NORMALIZE */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a:link,
+a:hover,
+a:focus,
+a:active,
+a:visited {
+  display: inline-block;
+  font-family: inherit;
+  font-size: inherit;
+  color: currentColor;
+  text-decoration: none;
+}
+
+button {
+  all: unset; /* Remove all default styles */
+  display: inline-block; /* Ensure it behaves like a button */
+  cursor: pointer; /* Show pointer on hover */
+  background: transparent; /* Transparent background */
+  border: none; /* Remove border */
+  font-family: inherit; /* Inherit font from parent */
+  font-size: inherit; /* Inherit font size from parent */
+  color: inherit; /* Inherit text color */
+  text-align: center; /* Center text */
+  line-height: inherit; /* Inherit line height */
+  text-decoration: none; /* Remove any text decoration */
+  outline: none; /* Remove default outline */
+  appearance: none; /* Remove platform-specific styling */
+  box-shadow: none; /* Remove shadow */
+}
+
+ul, ol {
+	list-style-type: none;
+}
+/* #endregion */
+
+/* #region SCROLLBARS */
+
+/* Entire scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 8px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* #endregion */
+
+html {
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 300px;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  padding-right: 300px;
+  overflow-y: scroll;
+}
+
+svg {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: #b0b0b0;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  cursor: pointer;
+  transition: stroke 0.2s ease;
 }
