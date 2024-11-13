@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/zoshyt-react/static/css/main.39ee5573.css",
-    "main.js": "/zoshyt-react/static/js/main.8f75b6fb.js",
+    "main.js": "/zoshyt-react/static/js/main.4c85f151.js",
     "index.html": "/zoshyt-react/index.html",
     "main.39ee5573.css.map": "/zoshyt-react/static/css/main.39ee5573.css.map",
-    "main.8f75b6fb.js.map": "/zoshyt-react/static/js/main.8f75b6fb.js.map"
+    "main.4c85f151.js.map": "/zoshyt-react/static/js/main.4c85f151.js.map"
   },
   "entrypoints": [
     "static/css/main.39ee5573.css",
-    "static/js/main.8f75b6fb.js"
+    "static/js/main.4c85f151.js"
   ]
 }
