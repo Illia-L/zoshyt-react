@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import styles from './InputText.module.css'
 
 export function InputText({ editContent, editedMarkdown, textareaRef }) {
   const [text, setText] = useState(editedMarkdown || '');
-  // const textareaRef = useRef(null);
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -30,7 +30,7 @@ export function InputText({ editContent, editedMarkdown, textareaRef }) {
     <textarea
       autoFocus
       ref={textareaRef}
-      className='editor-input-text'
+      className={styles.input}
       value={text}
       onChange={e => setText(e.target.value)}
       onKeyDown={handleKeyDown}

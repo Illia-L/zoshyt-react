@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { parseImage } from './helpers';
+import { Svg } from './Svg';
+import styles from './Menu.module.css'
 
 export default function Menu({
   content,
@@ -56,80 +58,55 @@ export default function Menu({
   return (
     <ul
       ref={menuRef}
-      className='editor-menu'
+      className={styles.menu}
       style={{ top: menuCoords.y, left: menuCoords.x }}
     >
       <li>
         {image.isImage ? (
           <label
-            className='editor-menu-item'
+            className={styles.item}
             form='editor-form'
             htmlFor={image.name}
           >
-            <svg
-              width='32'
-              height='32'
-            >
-              <use href='/images/icons.svg#edit'></use>
-            </svg>
+            <Svg id='edit' />
             Edit
           </label>
         ) : (
           <p
-            className='editor-menu-item'
+            className={styles.item}
             onClick={onEditOption}
           >
-            <svg
-              width='32'
-              height='32'
-            >
-              <use href='/images/icons.svg#edit'></use>
-            </svg>
+            <Svg id='edit' />
             Edit
-            <span className='hot-keys'>Double click</span>
+            <span className={styles['hot-keys']}>Double click</span>
           </p>
         )}
       </li>
 
       {indexMenuOn === 0 && (
         <li
-          className='editor-menu-item'
+          className={styles.item}
           onClick={onAddFirstOption}
         >
-          <svg
-            width='32'
-            height='32'
-          >
-            <use href='/images/icons.svg#insert-above'></use>
-          </svg>
+          <Svg id='insert-above' />
           Add before me
         </li>
       )}
 
       <li
-        className='editor-menu-item'
+        className={styles.item}
         onClick={onAddAfterOption}
       >
-        <svg
-          width='32'
-          height='32'
-        >
-          <use href='/images/icons.svg#insert-below'></use>
-        </svg>
+        <Svg id='insert-below' />
         Add after me
-        <span className='hot-keys'>Click</span>
+        <span className={styles['hot-keys']}>Click</span>
       </li>
 
       <li
-        className='editor-menu-item'
+        className={styles.item}
         onClick={onDeleteOption}
       >
-        <svg
-          width='32'
-          height='32'
-        >
-          <use href='/images/icons.svg#delete'></use>
-        </svg>
+        <Svg id='delete' />
         Delete
       </li>
     </ul>

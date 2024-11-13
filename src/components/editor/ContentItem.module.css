@@ -1,0 +1,73 @@
+.item {
+  position: relative;
+  margin-bottom: 16px;
+  border: 2px solid transparent;
+  transition: background-color 250ms linear, box-shadow 250 linear;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.insert-after::before {
+  content: '\2192';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  color: #b0b0b0;
+  font-size: 32px;
+  transform: translate(-100%, calc(50% + 8px));
+}
+
+.insert-first::before {
+  content: '\2192';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  color: #b0b0b0;
+  font-size: 32px;
+  transform: translate(-100%, calc(-50% + 8px));
+}
+
+.drag-over-top::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #b0b0b0;
+  top: -8px;
+}
+
+.drag-over-top::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #b0b0b0;
+  top: -8px;
+}
+
+.drag-over-bottom::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #b0b0b0;
+  bottom: -8px;
+}
+
+.item:hover,
+.item.menu-open {
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  box-shadow: 0 0 0 8px #f0f0f0;
+}
+
+.item:hover svg:hover {
+  stroke: #999;
+}

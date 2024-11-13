@@ -1,0 +1,28 @@
+.checkbox {
+  display: flex;
+  align-items: center;
+  /* cursor: pointer; */
+}
+
+.checkbox-input {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #000;
+  border-radius: 3px;
+  margin-right: 8px;
+  position: relative;
+  background-color: transparent;
+}
+
+.checkbox-input:checked + .checkbox-custom {
+  background-color: #000;
+}
+
+.checkbox span + span {
+  opacity: 0.7;
+  pointer-events: none;
+}

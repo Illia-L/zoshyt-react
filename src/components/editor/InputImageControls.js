@@ -1,18 +1,18 @@
 import { parseImage } from './helpers';
-
-const imageNameAndUrlOrFalse = /^!\[(.*)\]\((.*)\)$/;
+import { Svg } from './Svg';
+import styles from './InputImageControls.module.css'
 
 export function InputImageControls({
   content,
   setImageHandled,
   setContent,
   editContent,
-  isNewImageDisabled
+  isNewImageDisabled,
 }) {
   const images = content
-    .map(elementObj => elementObj.markdown.match(imageNameAndUrlOrFalse))
-    .filter(item => item)
-    .map(match => ({ name: match[1], url: match[2] }));
+    .map(elementObj => parseImage(elementObj.markdown))
+    .filter(item => item.isImage)
+    .map(obj => obj.obj);
   const lastNameNubmer = +images[images.length - 1]?.name?.split('-')[1] || 0;
   const newName = 'image-' + (lastNameNubmer + 1);
 
@@ -37,27 +37,32 @@ export function InputImageControls({
       <label
         type='button'
         htmlFor={newName}
-        className={isNewImageDisabled ? 'disabled' : ''}
+        className={isNewImageDisabled ? styles.disabled : ''}
       >
-        <svg width='32' height='32'><use href='/images/icons.svg#image'></use></svg>
+        <Svg id='image'/>
       </label>
     </div>
   );
 }
 
-function InputImage({ name, setImageHandled, editContent, isNewImageDisabled }) {
+function InputImage({
+  name,
+  setImageHandled,
+  editContent,
+  isNewImageDisabled,
+}) {
   function handlePickImage({ target }) {
     const { name } = target;
     const url = URL.createObjectURL(target.files[0]);
     const markdown = `![${name}](${url})`;
 
     editContent(markdown);
-    setImageHandled(name)
+    setImageHandled(name);
   }
 
   return (
     <input
-      className='editor-input-image'
+      className='hidden'
       type='file'
       name={name}
       id={name}
@@ -75,17 +80,19 @@ function InputImageWithFile({ image, setImageHandled, content, setContent }) {
     const imagePositionInContent = content.findIndex(
       elementObj => parseImage(elementObj.markdown)?.name === image.name
     );
-    const key = content[imagePositionInContent].key
+    const key = content[imagePositionInContent].key;
 
     URL.revokeObjectURL(image.url);
 
-    setContent(c => c.toSpliced(imagePositionInContent, 1, {key, markdown: newMarkdown}));
-    setImageHandled(name)
+    setContent(c =>
+      c.toSpliced(imagePositionInContent, 1, { key, markdown: newMarkdown })
+    );
+    setImageHandled(name);
   }
 
   return (
     <input
-      className='editor-input-image'
+      className='hidden'
       type='file'
       name={image.name}
       id={image.name}

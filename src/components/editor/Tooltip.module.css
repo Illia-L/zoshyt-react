@@ -1,0 +1,39 @@
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+.box {
+  position: absolute;
+  transform: translate(calc(40px - 100%), calc(-40px - 100%));
+  padding: 16px;
+  background-color: #fff;
+  color: #333;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.container:hover .box {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.box p,
+.box li {
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.box p {
+  margin-top: 24px;
+}

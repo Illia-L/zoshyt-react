@@ -1,24 +1,20 @@
-// Tooltip.js
 import React, { useState } from 'react';
+import styles from './Tooltip.module.css'
+import { Svg } from './Svg';
 
 export default function Tooltip({ children }) {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <div className='tooltip-container'>
+    <div className={styles.container}>
       <div
-        className='tooltip-icon'
+        className={styles.icon}
         onMouseEnter={() => setIsVisible(true)}
         onMouseLeave={() => setIsVisible(false)}
       >
-        <svg
-          width='32'
-          height='32'
-        >
-          <use href='/images/icons.svg#help'></use>
-        </svg>
+        <Svg id='help'/>
       </div>
-      {isVisible && <div className='tooltip-box'>{children}</div>}
+      {isVisible && <div className={styles.box}>{children}</div>}
     </div>
   );
 }
