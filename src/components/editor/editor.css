@@ -73,23 +73,62 @@
 
 /* Image styling */
 .editor-content img {
-  max-width: 80%;
-  max-height: 25vh;
+  max-width: 600px;
+  max-height: 450px;
   height: auto;
   display: block;
   margin: 1em 0;
   border-radius: 4px;
 }
 
-
-
 .editor-content-item {
   position: relative;
   margin-bottom: 16px;
+  border: 2px solid transparent;
+  transition: background-color 250ms linear, box-shadow 250 linear;
 }
 
 .editor-content-item:last-child {
   margin-bottom: 0;
+}
+
+.insert-after::before {
+  content: '\2192';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  color: #b0b0b0;
+  font-size: 32px;
+  transform: translate(-100%, calc(50% + 8px));
+}
+
+.insert-first::before {
+  content: '\2192';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  color: #b0b0b0;
+  font-size: 32px;
+  transform: translate(-100%, calc(-50% + 8px));
+}
+
+.drag-over::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #b0b0b0;
+}
+
+.drag-over.top::after {
+  top: -8px;
+}
+
+.drag-over.bottom::after {
+  bottom: -8px;
 }
 
 .content-element-buttons {
@@ -109,11 +148,15 @@
   stroke: transparent;
 }
 
+/* .content-element {
+  pointer-events: none;
+} */
+
 /* Container for the checkbox */
 .content-checkbox {
   display: flex;
   align-items: center;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 /* Hide the default checkbox */
@@ -142,25 +185,21 @@
   opacity: 0.7;
   pointer-events: none;
 }
-
+/* 
 .editor-content-item:hover .content-element-buttons {
   background-color: #fff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
+} */
+/* 
 .editor-content-item:hover svg {
   stroke: #b0b0b0;
-}
+} */
 
-.editor-content-item:hover::before {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  left: -16px;
-  width: 2px;
-  height: 100%;
-  background-color: #b0b0b0;
+.editor-content-item:hover,
+.editor-content-item.menu-open {
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  box-shadow: 0 0 0 8px #f0f0f0;
 }
 
 .editor-content-item:hover svg:hover {
@@ -170,10 +209,22 @@
 .editor-controls {
   position: fixed;
   bottom: 24px;
-  border: 1px solid grey;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border: 1px solid #999;
   border-radius: 16px;
   width: 700px;
   padding: 16px;
+  background-color: #fff;
+}
+
+.editor-controls svg {
+  stroke: #b0b0b0;
+}
+
+.editor-controls svg:hover {
+  stroke: #999;
 }
 
 .editor-input-text {
@@ -184,14 +235,104 @@
   resize: none;
   padding: 8px;
   font-size: 1rem;
-  font-family: "Roboto", sans-serif;
-  transition: height 250ms linear
+  font-family: 'Roboto', sans-serif;
+  transition: height 250ms linear;
 }
 
 .editor-input-image {
   display: none;
 }
 
+.editor-menu {
+  position: absolute;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  padding: 8px 0;
+  z-index: 1000;
+  min-width: 150px;
+}
+
+.editor-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 8px 16px;
+  line-height: 1.5;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.editor-menu-item:nth-child(2) {
+  flex-grow: 1;
+}
+
+.editor-menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.hot-keys {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
 .disabled {
   color: #eee;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-icon {
+  cursor: pointer;
+}
+
+.tooltip-box {
+  position: absolute;
+  /* top: -35px;
+  left: 50%; */
+  transform: translate(calc(40px - 100%), calc(-40px - 100%));
+  padding: 16px;
+  background-color: #fff;
+  color: #333;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tooltip-container:hover .tooltip-box {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tooltip-box p,
+.tooltip-box li {
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.tooltip-box p {
+  margin-top: 24px;
+}
+
+.markdown-tooltip span {
+  display: inline-block;
+  padding: 4px;
+  background-color: #eee;
+}
+
+span.fake-link {
+  color: #0000EE;
+  text-decoration: underline;
+  background-color: #fff;
+  cursor: pointer;
 }

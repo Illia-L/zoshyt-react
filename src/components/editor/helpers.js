@@ -1,5 +1,4 @@
 export function convertInlineMarkupToHTML(text) {
-  console.log('Raw text: ', text);
   text = text.replace(
     /\*\*\*(.+?)\*\*\*/g,
     (match, content) => `<b><i>${content}</i></b>`
@@ -18,7 +17,6 @@ export function convertInlineMarkupToHTML(text) {
       `<a href='${url}' target='_blank'>${textContent}</a>`
   );
 
-  console.log('Converted text: ', text);
 
   return text;
 }

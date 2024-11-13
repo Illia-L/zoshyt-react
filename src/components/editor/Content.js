@@ -1,15 +1,51 @@
-import { useEffect, useRef } from 'react';
-import { convertInlineMarkupToHTML, parseImage } from './helpers';
+import { useEffect, useRef, useState } from 'react';
+import { ContentItem } from './ContentItem';
+import Menu from './Menu';
 
 export function Content({
   content,
   editedIndex,
   imageHandled,
+  keyToAddAfterOrFirst,
+  textareaRef,
   setContent,
   setEditedIndex,
   setImageHandled,
+  setKeyToAddAfterOrFirst,
 }) {
+  const [draggedIndex, setDraggedIndex] = useState(null);
+  const [indexMenuOn, setIndexMenuOn] = useState(null);
+  const [menuCoords, setMenuCoords] = useState({ x: 0, y: 0 });
   const contentRef = useRef(null);
+
+  function handleDrop(index) {
+    if (index === null || index === draggedIndex) return;
+
+    const updatedContent = [...content];
+    const [draggedItem] = updatedContent.splice(draggedIndex, 1);
+
+    updatedContent.splice(index, 0, draggedItem);
+
+    const dropKey = content[index].key;
+    const isDropAfterAnAddAfter = dropKey === keyToAddAfterOrFirst;
+    const isDropAfterLast = index === content.length - 1;
+
+    if (isDropAfterAnAddAfter && isDropAfterLast)
+      setKeyToAddAfterOrFirst(draggedIndex);
+
+    const draggedKey = content[draggedIndex].key
+    const isDraggedAnAddAfter = draggedKey === keyToAddAfterOrFirst;
+    const isDraggedNotFirst = draggedIndex > 0;
+
+    if (isDraggedAnAddAfter && isDraggedNotFirst)
+      setKeyToAddAfterOrFirst(content[draggedIndex - 1].key);
+    
+    if (isDraggedAnAddAfter && !isDraggedNotFirst)
+      setKeyToAddAfterOrFirst(content[1].key);
+
+    setContent(updatedContent);
+    setDraggedIndex(null);
+  }
 
   function scrollContent() {
     const renderedContent = contentRef.current;
@@ -22,172 +58,57 @@ export function Content({
   useEffect(scrollContent, [content]);
 
   useEffect(() => {
-    console.log(imageHandled);
     if (!imageHandled) return;
 
-    console.log('handling image loading runs...');
-
     const image = document.getElementById(`${imageHandled}-img`);
-
-    console.log(image);
 
     if (image.complete) return scrollContent();
 
     image.addEventListener('load', () => {
-      console.log('load event fired...');
-      scrollContent()
+      scrollContent();
     });
 
-    setImageHandled(null)
+    setImageHandled(null);
 
     return () => image.removeEventListener('load', scrollContent);
   }, [imageHandled]);
 
   return (
-    <div
-      className='editor-content'
-      ref={contentRef}
-    >
-      {content.map((elementObj, index) => (
-        <ContentItem
-          markdown={elementObj.markdown}
-          index={index}
+    <>
+      {indexMenuOn !== null && (
+        <Menu
+          content={content}
+          indexMenuOn={indexMenuOn}
+          menuCoords={menuCoords}
+          setIndexMenuOn={setIndexMenuOn}
           setContent={setContent}
           setEditedIndex={setEditedIndex}
-          key={elementObj.key}
+          setKeyToAddAfterOrFirst={setKeyToAddAfterOrFirst}
         />
-      ))}
-    </div>
-  );
-}
-
-function ContentItem({ markdown, index, setContent, setEditedIndex }) {
-  return (
-    <div className='editor-content-item'>
-      <ContentElement
-        markdown={markdown}
-        index={index}
-      />
-
-      <ContentElementButtons
-        index={index}
-        markdown={markdown}
-        setContent={setContent}
-        setEditedIndex={setEditedIndex}
-      />
-    </div>
-  );
-}
-
-function ContentElement({ markdown }) {
-  const inlineHTML = numToCut => ({
-    __html: convertInlineMarkupToHTML(markdown.slice(numToCut)),
-  });
-
-  if (markdown.startsWith('[] ')) {
-    return (
-      <label className='content-checkbox'>
-        <input
-          type='checkbox'
-          className='content-checkbox-input'
-        />
-        <span className='content-checkbox-custom'></span>
-        <span dangerouslySetInnerHTML={inlineHTML(3)} />
-      </label>
-    );
-  }
-
-  if (markdown.startsWith('[x] ')) {
-    return (
-      <label className='content-checkbox'>
-        <input
-          type='checkbox'
-          className='content-checkbox-input'
-          checked={true}
-        />
-        <span className='content-checkbox-custom'></span>
-        <span dangerouslySetInnerHTML={inlineHTML(4)} />
-      </label>
-    );
-  }
-
-  if (markdown.startsWith('- '))
-    return <li dangerouslySetInnerHTML={inlineHTML(2)} />;
-
-  if (markdown.startsWith('# '))
-    return <h1 dangerouslySetInnerHTML={inlineHTML(2)} />;
-
-  if (markdown.startsWith('## '))
-    return <h2 dangerouslySetInnerHTML={inlineHTML(3)} />;
-
-  if (markdown.startsWith('### '))
-    return <h3 dangerouslySetInnerHTML={inlineHTML(4)} />;
-
-  if (markdown.startsWith('#### '))
-    return <h4 dangerouslySetInnerHTML={inlineHTML(5)} />;
-
-  const imageData = markdown.match(/^!\[(.*)\]\((.*)\)$/);
-
-  if (imageData)
-    return (
-      <img
-        className='editor-content-image'
-        src={imageData[2]}
-        alt={imageData[1]}
-        id={imageData[1] + '-img'}
-      />
-    );
-
-  return <p dangerouslySetInnerHTML={inlineHTML(0)} />;
-}
-
-function ContentElementButtons({
-  index,
-  markdown,
-  setContent,
-  setEditedIndex,
-}) {
-  const { isImage, name } = parseImage(markdown);
-
-  return (
-    <div className='content-element-buttons'>
-      {isImage ? (
-        <label
-          form='editor-form'
-          htmlFor={name}
-        >
-          <svg
-            width='32'
-            height='32'
-          >
-            <use href='/images/icons.svg#edit'></use>
-          </svg>
-        </label>
-      ) : (
-        <button
-          type='button'
-          onClick={() => setEditedIndex(index)}
-        >
-          <svg
-            width='32'
-            height='32'
-          >
-            <use href='/images/icons.svg#edit'></use>
-          </svg>
-        </button>
       )}
 
-      <button
-        type='button'
-        onClick={() => setContent(c => c.toSpliced(index, 1))}
+      <div
+        className='editor-content'
+        ref={contentRef}
       >
-        <svg
-          width='32'
-          height='32'
-        >
-          <use href='/images/icons.svg#delete'></use>
-        </svg>
-      </button>
-    </div>
+        {content.map((elementObj, index) => (
+          <ContentItem
+            elementObj={elementObj}
+            index={index}
+            draggedIndex={draggedIndex}
+            keyToAddAfterOrFirst={keyToAddAfterOrFirst}
+            indexMenuOn={indexMenuOn}
+            setContent={setContent}
+            setEditedIndex={setEditedIndex}
+            setDraggedIndex={setDraggedIndex}
+            handleDrop={handleDrop}
+            setKeyToAddAfterOrFirst={setKeyToAddAfterOrFirst}
+            setIndexMenuOn={setIndexMenuOn}
+            setMenuCoords={setMenuCoords}
+            key={elementObj.key}
+          />
+        ))}
+      </div>
+    </>
   );
 }
