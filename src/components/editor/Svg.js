@@ -4,7 +4,7 @@ export function Svg({ id }) {
       width='32'
       height='32'
     >
-      <use href={`/images/icons.svg#${id}`}></use>
+      <use href={`images/icons.svg#${id}`}></use>
     </svg>
   );
 }

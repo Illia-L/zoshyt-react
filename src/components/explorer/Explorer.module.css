@@ -1,0 +1,34 @@
+.explorer {
+  padding: 16px;
+}
+
+.explorer h3 {
+  margin: 16px 0 24px;
+}
+
+.explorer li:first-child {
+  margin-top: 12px;
+}
+
+.explorer li:last-child {
+  margin-bottom: 0;
+}
+
+.explorer li > ul {
+  padding-left: 24px;
+}
+
+.explorer li {
+  margin-bottom: 12px;
+}
+
+.titleBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;;
+}
+
+.explorer button {
+  font-size: 0.8rem;
+  color: #aaa;
+}
